@@ -24,7 +24,7 @@
         ],
         "interface-name": [
             true,
-            "never-prefix"
+            "always-prefix"
         ],
         "jsdoc-format": true,
         "jsx-no-lambda": false,
@@ -129,7 +129,8 @@
             true,
             "ban-keywords",
             "check-format",
-            "allow-leading-underscore"
+            "allow-leading-underscore",
+            "allow-pascal-case"
         ],
         "whitespace": [
             true,
