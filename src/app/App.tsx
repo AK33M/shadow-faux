@@ -1,8 +1,7 @@
-import "./App.scss";
-
 import * as React from "react";
 
-import { Button } from "react-bootstrap";
+import { Button, Panel, Well } from "react-bootstrap";
+
 import { Person } from "../person/Person";
 
 // tslint:disable:no-var-requires
@@ -16,80 +15,71 @@ class App extends React.Component<{}, {}> {
       { id: "^hb6rtevbd", name: "Akeem", age: 32 },
       { id: "6hbn7bxf7y", name: "Another person", age: 2 }
     ],
-    otherState: "some other value",
     showPersons: false
   };
 
-  // deletePersonHandler = (personIndex: number) => {
-  //   let persons = [...this.state.persons];
+  deletePersonHandler = (id: string) => {
+    let persons = [...this.state.persons];
 
-  //   persons = this.state.persons.filter((person, index) => {
-  //     return index !== personIndex;
-  //   });
+    persons = this.state.persons.filter((person) => {
+      return id !== person.id;
+    });
 
-  //   this.setState({
-  //     persons: persons
-  //   });
-  // }
+    this.setState({
+      persons: persons
+    });
+  }
 
   nameChangedHandler = (id: string, event: React.FormEvent<HTMLInputElement>) => {
-    // const personIndex = this.state.persons.findIndex((p) => {
-    //   return p.id === id;
-    // });
-
-    // let person = { ...this.state.persons[personIndex] };
-    // person.name = element.value;
-
-    // let persons = [...this.state.persons];
-    // persons[personIndex] = person;
-    let tempState = this.state;
+    let temp = [...this.state.persons];
     if (!!id) {
-      tempState.persons.map((x) => {
+      temp.map((x) => {
         if (x.id === id) {
           x.name = event.currentTarget.value;
         }
       });
     } else {
-      tempState.persons.map((x) => {
+      temp.map((x) => {
         x.name = "Damien";
       });
     }
 
     this.setState({
-      persons: tempState.persons
+      persons: temp
     });
   }
 
-  // toggleNameHandler = () => {
-  //   this.setState({
-  //     showPersons: !this.state.showPersons
-  //   });
-  // }
+  toggleNameHandler = () => {
+    this.setState({
+      showPersons: !this.state.showPersons
+    });
+  }
 
   public render(): React.ReactElement<{}> {
     let persons = null;
     // let btnClass: string = "";
 
-    // if (this.state.showPersons) {
-    persons =
-      (
-        <div>
-          {
-            this.state.persons
-              .map((person, index) => {
-                return <Person
-                  key={person.id}
-                  id={person.id}
-                  name={person.name}
-                  age={person.age}
-                  changed={this.nameChangedHandler.bind(this, person.id)}
-                />;
-              })}
-        </div>
-      );
+    if (this.state.showPersons) {
+      persons =
+        (
+          <div>
+            {
+              this.state.persons
+                .map((person, index) => {
+                  return <Person
+                    key={person.id}
+                    id={person.id}
+                    name={person.name}
+                    age={person.age}
+                    click={this.deletePersonHandler.bind(this, person.id)}
+                    changed={this.nameChangedHandler.bind(this, person.id)}
+                  />;
+                })}
+          </div>
+        );
 
-    //   btnClass = "red";
-    // }
+      //   btnClass = "red";
+    }
 
     let classes = [];
     if (this.state.persons.length <= 2) {
@@ -105,13 +95,19 @@ class App extends React.Component<{}, {}> {
           <img src={logo} className="logo" alt="logo" />
           <h1 className="title">Welcome to React</h1>
         </header>
-        {/* <button className={btnClass} onClick={this.toggleNameHandler}>
-          {this.state.showPersons ? "Hide names" : "Show names"}
-         </button> */}
-        {persons}
-        <p className="intro">
-          <Button onClick={this.nameChangedHandler.bind(this, null)}>Change Name to Damien</Button>
-        </p>
+        <Panel>
+          <Panel.Heading>
+            <Button block={true} bsStyle={!this.state.showPersons ? "primary" : "danger"} bsSize="small" onClick={this.toggleNameHandler}>{this.state.showPersons ? "Hide names" : "Show names"}</Button>
+          </Panel.Heading>
+          <Panel.Body>
+            <Well>
+              {persons}
+            </Well>
+          </Panel.Body>
+          <Panel.Footer>
+            <Button bsStyle="success" bsSize="small" onClick={this.nameChangedHandler.bind(this, null)}>Change Name to Damien</Button>
+          </Panel.Footer>
+        </Panel>
       </div>
     );
   }
