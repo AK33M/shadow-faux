@@ -5,14 +5,15 @@
     box-shadow: 0 2px 3px #ccc;
     padding: 16px;
     text-align: center;
+    
+    .display {
+        font-weight: bold;
+    }
 }
 
-.display {
-    font-weight: bold;
-}
 
 @media (min-width: 500px) {
-    .Person {
+    .person {
         width: 450px;
     }
 }
